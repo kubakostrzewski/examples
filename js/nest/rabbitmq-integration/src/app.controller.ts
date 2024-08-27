@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
-import { RabbitMqService } from "./rabbitmq/rabbitmq.service";
+import { Body, Controller, Post } from '@nestjs/common';
+import { RabbitMqService } from './rabbitmq/rabbitmq.service';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-
   constructor(private readonly rabbitMQService: RabbitMqService) {}
 
   @Post('send-notification')
@@ -12,9 +12,8 @@ export class AppController {
     return 'Notification sent to RabbitMQ';
   }
 
-
-  @Get()
-  getHello(): string {
-    return 'this.appService.getHello()';
+  @EventPattern('event_name')
+  public sendEmailPattern(@Payload() data): void {
+    console.log('email sent!', { data });
   }
 }
