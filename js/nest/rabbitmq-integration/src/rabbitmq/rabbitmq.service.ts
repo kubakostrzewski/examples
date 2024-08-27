@@ -20,7 +20,12 @@ export class RabbitMqService {
     });
   }
 
-  async sendNotification(notification: unknown) {
-    return await firstValueFrom(this.client.emit('event_name', notification));
+  async sendEvent(data: unknown) {
+    return await firstValueFrom(this.client.emit('event_name', data));
+  }
+
+  async sendMessage(data: unknown) {
+    const pattern = { cmd: 'message_name' };
+    return await firstValueFrom(this.client.emit(pattern, data));
   }
 }
